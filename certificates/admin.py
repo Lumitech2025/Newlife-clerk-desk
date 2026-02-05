@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.utils.html import format_html
-from .models import Baptism, Dedication
+from .models import Baptism, Dedication, HolyCommunion, MemberTransfer
 from .utils import send_httpsms_reminder, send_church_email
 
 # --- ACTIONS ---
@@ -97,3 +97,26 @@ class DedicationAdmin(admin.ModelAdmin):
         if obj.is_picked_up:
             return format_html('<span style="padding: 5px 10px; background: #28a745; color: white; border-radius: 4px;">Picked</span>')
         return format_html('<span style="padding: 5px 10px; background: #dc3545; color: white; border-radius: 4px;">Pending</span>')
+    
+@admin.register(HolyCommunion)
+class HolyCommunionAdmin(admin.ModelAdmin):
+    list_display = ('date', 'participants_count', 'sheet_preview')
+
+    fields = ('date', 'participants_count', 'sheet_image')
+
+    def sheet_preview(self, obj):
+        if obj.sheet_image:
+            return format_html('<img src="{}" style="width: 50px; height: auto; border-radius: 4px;" />', obj.sheet_image.url)
+        return "No Image"
+    
+    sheet_preview.short_description = "Sheet Preview"
+
+
+@admin.register(MemberTransfer)
+class MemberTransferAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'transfer_type', 'church_involved', 'stage', 'date_started', 'date_completed')
+    list_filter = ('transfer_type', 'stage', 'date_started')
+    search_fields = ('full_name', 'church_involved', 'phone_number')
+    list_editable = ('stage',)  
+
+    readonly_fields = ('date_started', 'date_completed', 'last_updated')
