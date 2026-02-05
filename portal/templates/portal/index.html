@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newlife Church Clerk Desk</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        .bg-image {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("{% static 'Newlife.jpg' %}");
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        h1 { margin: 0; letter-spacing: 2px; font-size: 2.5rem; }
+        p { margin-bottom: 30px; opacity: 0.9; font-style: italic; }
+        .btn-group { display: flex; flex-direction: column; gap: 15px; }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 200px;
+        }
+        /* Green Admin Button */
+        .btn-admin { background: #28a745; color: white; border: none; }
+        .btn-admin:hover { background: #218838; transform: translateY(-2px); }
+        
+        /* Blue Reports Button */
+        .btn-reports { background: #007bff; color: white; border: none; }
+        .btn-reports:hover { background: #0069d9; transform: translateY(-2px); }
+
+        /* Logout Link */
+        .logout-link { margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 0.9rem; text-decoration: none; }
+        .logout-link:hover { color: white; }
+    </style>
+</head>
+<body>
+    <div class="bg-image">
+        <div class="glass-panel">
+            <h1>NEWLIFE SDA CHURCH</h1>
+            <p>Clerk's Management System</p>
+
+            <div class="btn-group">
+                {% if user.is_authenticated %}
+                    <a href="/admin/" class="btn btn-admin">Clerk Dashboard</a>
+                    <a href="/reports/" class="btn btn-reports">Monthly Reports</a>
+                    <p style="margin-top: 20px; font-style: normal;">Welcome, <strong>{{ user.username }}</strong></p>
+                    <a href="/admin/logout/" class="logout-link">Sign Out</a>
+                {% else %}
+                    <a href="/admin/login/?next=/" class="btn btn-admin">Login</a>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">Login to access the Clerk Dashboard.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
